@@ -13,6 +13,7 @@ use crate::{models::User, COOKIE_NAME};
 ///
 pub async fn delete_task_auth(
     Extension(pool): Extension<MySqlPool>,
+    //TODO: Extension(websocket_connections): Extension<WebsocketManager>,
     cookies: Cookies,
     Path(id): Path<String>,
 ) -> impl IntoResponse {
@@ -51,6 +52,8 @@ pub async fn delete_task_auth(
     {
         Ok(result) => {
             if result.rows_affected() > 0 {
+                //TODO: Send a websocket message to all clients with uuid "update"
+                // websocket_connections.lock().unwrap().send_to(Message::text("update"), "update".to_string());
                 (StatusCode::OK, Json(())).into_response()
             } else {
                 (StatusCode::NOT_FOUND, Json("Task not found")).into_response()

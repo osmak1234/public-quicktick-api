@@ -18,28 +18,9 @@ pub async fn websocket_handler(
 ) -> impl IntoResponse {
     let uuid = cookies.get("user_uuid").unwrap().value().to_string();
 
-    // Upgrade the WebSocket connection and add it to the WebsocketManager
-    if let Ok(socket) = ws.await {
-        websockets.add_connection(uuid.clone(), socket);
-    }
+    // I need to upgrade the websocket connection and then add it to the list of connections so I can send messages from other routes.
 
-    // You need to return a response here, for example:
     (StatusCode::OK, ()).into_response()
-}
-
-pub async fn handle_ws(uuid: String, socket: WebSocket, websockets: WebsocketManager) {
-    // Add the WebSocket connection to the manager
-    let connection_index = websockets.add_connection(uuid.clone(), socket.clone());
-
-    // Perform any initialization or handling you need here
-
-    // NOTE: No loop for receiving messages; this function doesn't actively listen
-
-    // You can store the WebSocket instance in the manager for later use
-    websockets.store_connection(uuid.clone(), connection_index, socket.clone());
-
-    // No need to remove the WebSocket connection here
-    // It will be removed when explicitly requested or when the WebSocket is closed
 }
 
 pub struct WebsocketManager {
