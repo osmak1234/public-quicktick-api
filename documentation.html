@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>API Documentation</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <style>
+    :root {
+          --bg_h: #1d2021;
+          --bg:   #282828;
+          --bg_s: #32302f;
+          --bg1:  #3c3836;
+          --bg2:  #504945;
+          --bg3:  #665c54;
+          --bg4:  #7c6f64;
+
+          --fg:  #fbf1c7;
+          --fg1: #ebdbb2;
+          --fg2: #d5c4a1;
+          --fg3: #bdae93;
+          --fg4: #a89984;
+
+          --red:    #fb4934;
+          --green:  #b8bb26;
+          --yellow: #fabd2f;
+          --blue:   #83a598;
+          --purple: #d3869b;
+          --aqua:   #8ec07c;
+          --gray:   #928374;
+          --orange: #fe8019;
+
+          --red-dim:    #cc2412;
+          --green-dim:  #98971a;
+          --yellow-dim: #d79921;
+          --blue-dim:   #458588;
+          --purple-dim: #b16286;
+          --aqua-dim:   #689d6a;
+          --gray-dim:   #a89984;
+          --orange-dim: #d65d0e;
+    }
+    body {
+      font-family: 'Fira Code', monospace;
+      margin: 0;
+      padding: 0;
+      background-color: var(--bg);
+      color: var(--fg);
+      max-width: 980px;
+      margin: auto;
+      padding: 20px;
+    }
+    h1 {
+      margin: 20px 0;
+      font-size: 28px;
+      color: var(--red); /* Fixed typo in 'color::' */
+    }
+    h2 {
+      margin: 20px 0 10px;
+      font-size: 24px;
+      color: var(--blue);
+    }
+    p {
+      margin: 5px 0;
+      font-size: 16px;
+    }
+    pre {
+      background-color: var(--bg_h);
+      padding: 10px;
+      border-radius: 4px;
+      overflow-x: auto;
+      margin-bottom: 20px;
+    }
+    code {
+      color: var(--aqua);
+      background-color: var(--bg_h);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 18px;
+    }
+    .section {
+      margin: 20px 0;
+      padding: 20px;
+      background-color: var(--bg_h);
+      border-radius: 4px;
+    }
+    .separator {
+      margin: 20px 0;
+      border-top: 1px solid var(--gray-dim);
+    }
+  </style>
+</head>
+<body>
+    <h1>API Documentation</h1>
+
+<!-- POST Auth using cookies -->
+    <div class="section">
+        <h2>POST /post/create_task</h2>
+        <p>Auth using cookies. Create a new task.</p>
+        <pre><code class="language-typescript">let taskData = {
+  name: 'Task Name',
+  description: 'Task Description',
+  uuid: 'uuid_value'
+};
+
+let response = await fetch('https://my-api.com/post/create_task', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  credentials: 'include',
+  body: JSON.stringify(taskData)
+});</code></pre>
+        <p>
+            <strong>Input:</strong>
+            <pre><code class="language-rust">
+Json {
+  name: String,
+  description: String,
+  uuid: String // (36 chars long)
+}</code></pre>
+            <strong>Output:</strong> Ok() / Err(message)
+        </p>
+    </div>
+
+    <!-- DELETE Auth using cookies -->
+    <div class="section">
+        <h2>DELETE /delete/task/:id</h2>
+        <p>Auth using cookies. Delete a task. Input: uuid as route parameter.</p>
+        <pre><code class="language-typescript">let taskId = 'task_id';
+
+let response = await fetch(`https://my-api.com/delete/task/${taskId}`, {
+  method: 'DELETE',
+  credentials: 'include',
+});
+
+if (!response.ok) {
+  throw new Error('Network response was not ok');
+}</code></pre>
+        <strong>Output:</strong> Ok() / Err(message)
+    </div>
+
+    <!-- PATCH Auth using cookies -->
+    <div class="section">
+        <h2>PATCH /patch/task</h2>
+        <p>Auth using cookies. Update a task.</p>
+        <pre><code class="language-typescript">let taskUpdate = {
+  task_uuid: 'uuid_value',
+  action: 'RenameTask',
+  NewName: 'New Task Name'
+};
+
+let response = await fetch('https://my-api.com/patch/task', {
+  method: 'PATCH',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  credentials: 'include',
+  body: JSON.stringify(taskUpdate)
+});</code></pre>
+        <p>
+            <strong>Input:</strong>
+            <pre><code class="language-rust">
+Json {
+  task_uuid: String,
+  action: String, // (One of these: "RenameTask", "ChangeDesc", "ToggleTask", "ChangeOrder")
+  //1) NewName: String,
+  //2) NewDesc: String,
+  //3)
+  //4) ChangeOrder: i32
+}</code></pre>
+            <strong>Output:</strong> Ok() / Err(message)
+        </p>
+    </div>
+
+    <!-- POST Auth using cookies -->
+    <div class="section">
+        <h2>POST /post/create_user</h2>
+        <p>Auth using cookies. Create a new user.</p>
+        <pre><code class="language-typescript">let userData = {
+  name: 'User Name',
+  email: 'Email',
+  password: 'Password',
+};
+
+let response = await fetch('https://my-api.com/post/create_user', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  credentials: 'include',
+  body: JSON.stringify(userData)
+});</code></pre>
+        <p>
+            <strong>Input:</strong>
+            <pre><code class="language-rust">
+Json {
+  name: String,
+  email: String,
+  password: String,
+}</code></pre>
+            <strong>Output:</strong> Ok() + cookie for auth / Err(message)
+        </p>
+    </div>
+
+    <!-- DELETE Auth using cookies -->
+    <div class="section">
+        <h2>DELETE /delete/user</h2>
+        <p>Auth using cookies. Delete a user.</p>
+        <pre><code class="language-typescript">let response = await fetch('https://my-api.com/delete/user', {
+  method: 'DELETE',
+  credentials: 'include',
+});
+
+if (!response.ok) {
+  throw new Error('Network response was not ok');
+}</code></pre>
+        <strong>Output:</strong> Ok() / Err(message)
+    </div>
+
+    <!-- GET Logout -->
+    <div class="section">
+        <h2>GET /logout</h2>
+        <p>Logout a user.</p>
+        <pre><code class="language-typescript">let response = await fetch('https://my-api.com/logout', {
+  method: 'GET',
+  credentials: 'include',
+});
+
+if (!response.ok) {
+  throw new Error('Network response was not ok');
+}</code></pre>
+        <strong>Output:</strong> Ok() / Err(message)
+    </div>
+
+    <!-- REST CONTINUES FOR '_LOGIN', 'GET(board)', 'POST(board)', 'PATCH(board)', 'DELETE(board)', 'GET(/)' and 'GET(404)' ROUTES -->
+
+    <!-- Include Prism library for syntax highlight in the HTML -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-json.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prism-json5@0.1.2/prism-json5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-typescript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/plugins/line-highlight/prism-line-highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-rust.min.js"></script>
+</body>
+</html>

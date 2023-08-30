@@ -1,0 +1,8 @@
+# production
+/target
+
+# local env files
+# do not commit any .env files to git
+.env
+.env*.local
+
